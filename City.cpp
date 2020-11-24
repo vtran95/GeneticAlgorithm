@@ -5,25 +5,25 @@
 #include "City.hpp"
 
 // Constructor for setting name, x-coordinate, and y-coordinate
-City::City(string name, int x, int y) : name(name), x(x), y(y) {}
+City::City(int id, double x, double y) : id(id), x(x), y(y) {}
 
 // Getter for city name
-const string City::getName() const {
-    return name;
+const int City::getId() const {
+    return id;
 }
 
 // Getter for city x-coordinate
-int City::getX() const {
+double City::getX() const {
     return x;
 }
 
 // Getter for city y-coordinate
-int City::getY() const {
+double City::getY() const {
     return y;
 }
 
 // Overloaded insertion operator prints description of City
 std::ostream &operator<<(ostream &os, const City& city) {
-    os << "City: " << city.getName() << ", x: " << city.getX() << ", y: " << city.getY() << endl;
+    os << "City " << city.getId() << ", x: " << city.getX() << ", y: " << city.getY() << endl;
     return os;
 }

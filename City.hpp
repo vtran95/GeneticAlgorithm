@@ -11,22 +11,22 @@ using namespace std;
 
 // City class with name and coordinates
 class City {
-    string name;
-    int x;
-    int y;
+    int id;
+    double x;
+    double y;
 
 public:
     // Constructor for setting name, x-coordinate, and y-coordinate
-    City(string name, int x, int y);
+    City(int id, double x, double y);
 
     // Getter for city name
-    const string getName() const;
+    const int getId() const;
 
     // Getter for city x-coordinate
-    int getX() const;
+    double getX() const;
 
     // Getter for city y-coordinate
-    int getY() const;
+    double getY() const;
 
     // Overloaded insertion operator for printing to ostream
     friend ostream& operator<<(ostream& os, const City& city);
