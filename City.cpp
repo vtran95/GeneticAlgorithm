@@ -23,7 +23,7 @@ double City::getY() const {
 }
 
 // Overloaded insertion operator prints description of City
-std::ostream &operator<<(ostream &os, const City& city) {
+ostream &operator<<(ostream &os, const City& city) {
     os << "City " << city.getId() << ", x: " << city.getX() << ", y: " << city.getY() << endl;
     return os;
 }

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <random>
+#include <ctime>
 #include "City.hpp"
 
 #define XY_MIN 0.0

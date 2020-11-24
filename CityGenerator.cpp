@@ -8,8 +8,7 @@
 // for the x and y values
 vector<City> CityGenerator::createList(double n) {
     // Random double generator from XY_MIN to XY_MAX
-    random_device rd;
-    mt19937 gen(rd());
+    default_random_engine gen(time(0));
     uniform_real_distribution<double> dist(XY_MIN, XY_MAX);
 
     // Vector to hold the City objects
