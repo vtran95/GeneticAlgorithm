@@ -1,6 +1,9 @@
 #include <iostream>
+#include "City.hpp"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    City test("A", 1, 2);
+    cout << test << endl;
+
     return 0;
 }
