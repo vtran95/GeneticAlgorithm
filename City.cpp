@@ -2,6 +2,7 @@
 // Created by Vincent on 2020-11-23.
 //
 
+#include <iomanip>
 #include "City.hpp"
 
 // Constructor for setting name, x-coordinate, and y-coordinate
@@ -24,6 +25,7 @@ double City::getY() const {
 
 // Overloaded insertion operator prints description of City
 ostream &operator<<(ostream &os, const City& city) {
-    os << "City " << city.getId() << ", x: " << city.getX() << ", y: " << city.getY() << endl;
+    os << "City " << setw(2) << city.getId() << ", x: " << setw(7) << fixed << setprecision(3)
+       << city.getX() << ", y: " << setw(7) << city.getY() << endl;
     return os;
 }

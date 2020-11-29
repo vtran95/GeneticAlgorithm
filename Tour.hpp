@@ -24,6 +24,12 @@ public:
     // Constructor taking in the master list of cities as reference
     Tour(vector<City> &masterList);
 
+    // Constructor taking in a vector of City pointers
+    Tour(vector<City*> cities);
+
+    // Copy constructor
+    Tour(const Tour &copy_tour);
+
     // Destructor
     ~Tour();
 
@@ -32,6 +38,25 @@ public:
 
     // Getter for the fitness rating
     double getFitnessRating() const;
+
+    // Return size of tour which is the size of the cityPointers vector
+    int size() const;
+
+    // Return a copy of the Tour from begin index to end index
+    Tour copy(int begin, int end);
+
+    // Concat the reference tour to this tour (ignoring duplicates)
+    Tour &concat(const Tour &tour);
+
+    // Check to see if the City* pointer exists in this Tour's cityPointers
+    bool isDuplicate(City* city);
+
+    // an overloaded assignment = operator for the copy-and-swap algorithm
+    // PRE: other represents the tour that gets assigned
+    Tour &operator=(Tour other);
+
+    // a Tour swap operator
+    friend void tourSwap(Tour &original, Tour &other);
 
     // Overloaded insertion operator for printing to ostream
     friend ostream& operator<<(ostream& os, const Tour& tour);
