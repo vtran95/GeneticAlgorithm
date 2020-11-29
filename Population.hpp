@@ -8,6 +8,7 @@
 #include "Tour.hpp"
 
 #define PARENT_POOL_SIZE 5
+#define NUMBER_OF_PARENTS 2
 
 class Population {
     vector<City> masterList;
@@ -28,6 +29,9 @@ public:
 
     // Getter for returning all tours
     vector<Tour> getTours() const;
+
+    // Setter for setting new tours
+    void setTours(vector<Tour> t);
 
     // Return the tour at the index
     Tour getAt(int index) const;

@@ -26,7 +26,7 @@ Tour::Tour(vector<City *> cities) : cityPointers(cities) {
 
 // copy constructor
 Tour::Tour(const Tour &copy_tour) :
-cityPointers(copy_tour.getCityPointers()), fitnessRating(copy_tour.getFitnessRating()) {}
+cityPointers(copy_tour.cityPointers), fitnessRating(copy_tour.fitnessRating) {}
 
 // Destructor to free pointers and clear the vector
 Tour::~Tour() {
@@ -68,6 +68,8 @@ Tour &Tour::concat(const Tour &tour) {
             this->cityPointers.push_back(addCities.at(i));
         }
     }
+
+    this->fitnessRating = calcFitnessRating();
     return *this;
 }
 
@@ -93,9 +95,9 @@ double Tour::calcFitnessRating() {
     double totalDist = 0;
     for (auto it = cityPointers.begin(); it != prev(cityPointers.end()); ++it) {
         auto it2 = next(it);
-        City c1 = **it;
-        City c2 = **it2;
-        totalDist += calcDistance(c1, c2);
+//        City c1 = **it;
+//        City c2 = **it2;
+        totalDist += calcDistance(**it, **it2);
     }
     totalDist += calcDistance(**(cityPointers.end()-1), **cityPointers.begin());
 

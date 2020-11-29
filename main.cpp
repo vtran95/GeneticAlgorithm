@@ -3,8 +3,8 @@
 #include "Tour.hpp"
 #include "Population.hpp"
 
-#define CITIES_IN_TOUR 10
-#define POPULATION_SIZE 10
+#define CITIES_IN_TOUR 32
+#define POPULATION_SIZE 32
 
 int main() {
     // Generator class that creates a number of cities
