@@ -5,6 +5,7 @@
 #ifndef GENETICALGORITHM_POPULATION_HPP
 #define GENETICALGORITHM_POPULATION_HPP
 
+#include <iterator>
 #include "Tour.hpp"
 
 #define PARENT_POOL_SIZE 5
@@ -14,9 +15,9 @@ class Population {
     vector<City> masterList;
     vector<Tour> tours;
     int max;
+    vector<Tour>::iterator eliteIter;
+    bool eliteIterFlag;
 
-    // moves the elite tour to the front of the list
-    void moveEliteToFront();
 public:
     Population(vector<City> cities, int max);
     Population(vector<City> masterList, vector<Tour> tours);
@@ -39,15 +40,25 @@ public:
     // Return the best tour
     Tour getBestTour() const;
 
-    // Move the tour with the best fitness rating to the front
-    // of the vector and return it's fitness rating
+    // Return the fitness rating of the elite tour
     double getBestFitnessRating() const;
+
+    // Find the Tour with the best fitness, and set to eliteIter
+    // Return true if a new iterator is set, else return false if it's the same
+    bool setEliteIter();
+
+    // moves the elite tour to the front of the list
+    void moveEliteToFront();
 
     // Return a set of random tours used as a parent for crossover
     Population makeParent();
 
-    // Perform crossover
+    // Perform crossover algorithm to generate new Tours
     void crossover();
+
+    // Mutate each Tour by swapping cities at random
+    // depending on the double rate given
+    void mutate(double rate);
 
     // an overloaded assignment = operator for the copy-and-swap algorithm
     // PRE: other represents the tour that gets assigned

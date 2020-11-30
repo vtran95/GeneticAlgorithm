@@ -51,6 +51,9 @@ public:
     // Check to see if the City* pointer exists in this Tour's cityPointers
     bool isDuplicate(City* city);
 
+    // Mutate this Tour by swapping Cities according to rate
+    Tour &mutateCities(double rate);
+
     // an overloaded assignment = operator for the copy-and-swap algorithm
     // PRE: other represents the tour that gets assigned
     Tour &operator=(Tour other);

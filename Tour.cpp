@@ -83,6 +83,28 @@ bool Tour::isDuplicate(City *key) {
     }
 }
 
+// Mutate this Tour by checking the random number generator against the
+// parameter rate and then if it satisfies the conditions,
+// swap the current City with the next City in the Tour
+Tour &Tour::mutateCities(double rate) {
+    // Random double generator from 0 to 1
+    default_random_engine gen(time(0));
+    uniform_real_distribution<double> dist(0, 1);
+
+    // Iterate through all of the Cities in the tour until one before the last tour
+    for (auto it = cityPointers.begin(); it != prev(cityPointers.end()); ++it) {
+        // If the random double generator is less than the rate,
+        // swap the current city with the next one
+        if (dist(gen) < rate) {
+            iter_swap(it, next(it));
+        }
+    }
+
+    // Calculate the new fitness rating
+    this->fitnessRating = calcFitnessRating();
+    return *this;
+}
+
 // Calculates the distance between two cities
 double Tour::calcDistance(City c1, City c2) {
     double xDist = c2.getX() - c1.getX();
@@ -95,8 +117,6 @@ double Tour::calcFitnessRating() {
     double totalDist = 0;
     for (auto it = cityPointers.begin(); it != prev(cityPointers.end()); ++it) {
         auto it2 = next(it);
-//        City c1 = **it;
-//        City c2 = **it2;
         totalDist += calcDistance(**it, **it2);
     }
     totalDist += calcDistance(**(cityPointers.end()-1), **cityPointers.begin());

@@ -5,7 +5,7 @@
 #include "Population.hpp"
 
 // Constructor that creates a vector of Tour objects with size max
-Population::Population(vector<City> cities, int max) : masterList(cities), max(max) {
+Population::Population(vector<City> cities, int max) : masterList(cities), max(max), eliteIterFlag(false) {
     for (int i = 0; i < max; i++) {
         Tour t(masterList);
         tours.push_back(t);
@@ -18,6 +18,7 @@ Population::Population(vector<City> masterList, vector<Tour> t) {
     this->masterList = masterList;
     this->tours = t;
     this->max = t.size();
+    this->eliteIterFlag = false;
     moveEliteToFront();
 }
 
@@ -26,6 +27,8 @@ Population::Population(const Population &copy_pop) {
     masterList = copy_pop.masterList;
     tours = copy_pop.getTours();
     max = copy_pop.getTours().size();
+    eliteIter = copy_pop.eliteIter;
+    eliteIterFlag = copy_pop.eliteIterFlag;
     moveEliteToFront();
 }
 
@@ -41,20 +44,15 @@ void Population::moveEliteToFront() {
         return;
     }
 
-    // Initialize the best fitness rating, and the iterator pointing at the tour with best fitness
-    int bestFitness = tours[0].getFitnessRating();
-    auto bestIter = tours.begin();
-
-    // Loop through each tour to find the tour with the best fitness rating
-    for (auto it = tours.begin(); it != tours.end(); ++it) {
-        if ((*it).getFitnessRating() < bestFitness) {
-            bestFitness = (*it).getFitnessRating();
-            bestIter = it;
-        }
-    }
+    // Find the Tour with the best fitness rating, and the iterator
+    // pointing towards it
+    setEliteIter();
 
     // swap the first tour with the tour with best fitness
-    iter_swap(tours.begin(), bestIter);
+    iter_swap(tours.begin(), eliteIter);
+
+    // Re-assign eliteIter to the Tour at the start
+    eliteIter = tours.begin();
 }
 
 // Return all Tours
@@ -65,26 +63,62 @@ vector<Tour> Population::getTours() const {
 // Set new tours for this Population
 void Population::setTours(vector<Tour> t) {
     tours = t;
-    moveEliteToFront();
 }
 
 Tour Population::getAt(int index) const {
     return tours[index];
 }
 
-// Returns the best tour
+// Returns the best tour, else if it has not been set, throw an error
 Tour Population::getBestTour() const {
-    return tours[0];
+    if (eliteIterFlag) {
+        return *eliteIter;
+    } else {
+        throw invalid_argument("Iterator for Best Tour has not been set.");
+    }
 }
 
-// Returns the best fitness rating
+// Returns the best fitness rating, else if it has not been set, throw an error
 double Population::getBestFitnessRating() const {
+    if (eliteIterFlag) {
+        return (*eliteIter).getFitnessRating();
+    } else {
+        throw invalid_argument("Iterator for Best Tour has not been set.");
+    }
+}
+
+// Determines the Tour with the best fitness rating and sets an iterator pointing to it
+// Return true if a new iterator is set, else return false if it's the same or empty
+bool Population::setEliteIter() {
     // Return -1 if tours is empty, else return the tour in the front
     // which is swapped at constructor to be the best tour
     if (tours.empty()) {
-        return -1;
+        return false;
     } else {
-        return tours[0].getFitnessRating();
+        // Initialize the best fitness rating, and the iterator pointing at the tour with best fitness
+        int bestFitness = tours[0].getFitnessRating();
+        auto bestIter = tours.begin();
+
+        // Loop through each tour to find the tour with the best fitness rating
+        for (auto it = tours.begin(); it != tours.end(); ++it) {
+            if ((*it).getFitnessRating() < bestFitness) {
+                bestFitness = (*it).getFitnessRating();
+                bestIter = it;
+            }
+        }
+
+        // Assign true to signal that the iterator has been set
+        eliteIterFlag = true;
+
+        // Check if eliteIter already is pointing to the Tour with best fitness
+        if (eliteIter == bestIter) {
+            return false;
+        } else {
+            // Assign the iterator pointing to the Tour with best fitness to eliteIter
+            eliteIter = bestIter;
+            return true;
+        }
+
     }
 }
 
@@ -143,8 +177,19 @@ void Population::crossover() {
         newTours.push_back(crossTour);
     }
     this->setTours(newTours);
-    // Remove this later
-    cout << "new tours: " << *this << endl;
+}
+
+// Mutate each tour in the Population
+void Population::mutate(double rate) {
+    // Immediately return if tours is empty
+    if (tours.empty()) {
+        return;
+    }
+
+    // Mutate each tour, except for the elite tour (the first one)
+    for (auto it = next(tours.begin()); it != tours.end(); ++it ) {
+        (*it).mutateCities(rate);
+    }
 }
 
 // overloaded assignment operator=
