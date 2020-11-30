@@ -11,8 +11,11 @@ using namespace std;
 
 // City class with name and coordinates
 class City {
+    // The City's id
     int id;
+    // The City location's x-coordinate
     double x;
+    // The City location's y-coordinate
     double y;
 
 public:

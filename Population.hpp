@@ -12,14 +12,22 @@
 #define NUMBER_OF_PARENTS 2
 
 class Population {
+    // Master list of all Cities
     vector<City> masterList;
+    // The vector of Tour objects
     vector<Tour> tours;
+    // The size of the tours
     int max;
+    // An iterator pointing to the elite tour
     vector<Tour>::iterator eliteIter;
+    // A flag for whether eliteIter has been set or not
     bool eliteIterFlag;
 
 public:
+    // Constructor creates random Tours using the masterList as reference
     Population(vector<City> cities, int max);
+
+    // Constructor creates a Population from a pre-defined list of tours
     Population(vector<City> masterList, vector<Tour> tours);
 
     // Copy constructor

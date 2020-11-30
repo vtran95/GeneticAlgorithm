@@ -12,7 +12,9 @@
 #include "City.hpp"
 
 class Tour {
+    // The vector of city pointers in order of the route
     vector<City*> cityPointers;
+    // This tours total distance
     double fitnessRating;
 
     // Calculate distance between two cities
